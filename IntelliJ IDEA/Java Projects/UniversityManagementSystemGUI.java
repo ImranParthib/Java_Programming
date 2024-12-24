@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 public class UniversityManagementSystemGUI {
     private University university;
+    private User currentUser;
 
     public UniversityManagementSystemGUI() {
         // Initialize the university object
@@ -13,6 +14,25 @@ public class UniversityManagementSystemGUI {
         JFrame frame = new JFrame("University Management System");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+
+        // Show registration dialog
+        RegisterDialog registerDialog = new RegisterDialog(frame);
+        registerDialog.setVisible(true);
+        if (!registerDialog.isSucceeded()) {
+            System.exit(0);
+        }
+
+        // Show login dialog
+        LoginDialog loginDialog = new LoginDialog(frame);
+        loginDialog.setVisible(true);
+        if (loginDialog.isSucceeded()) {
+            currentUser = new User("admin", "password", "admin"); // Replace with actual user data
+        } else {
+            System.exit(0);
+        }
+
+
 
         // Custom panel with background image
         BackgroundPanel panel = new BackgroundPanel(new ImageIcon("university_banner.jpg").getImage());
@@ -74,6 +94,10 @@ public class UniversityManagementSystemGUI {
         gbc.gridx = 1;
         gbc.gridy = 2;
         contentPanel.add(searchButton, gbc);
+
+
+
+
 
         JButton listDepartmentsButton = createButton("List Departments", e -> listDepartments(), new Color(60, 179, 113));
         listDepartmentsButton.setToolTipText("List all departments in the university");
