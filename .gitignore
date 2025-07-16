@@ -1,0 +1,35 @@
+# Ignore compiled Java class files
+*.class
+
+# Ignore build folders (if you use Maven/Gradle)
+bin/
+build/
+out/
+
+# Ignore IDE files
+*.iml
+*.ipr
+*.iws
+.idea/
+*.classpath
+*.project
+*.settings/
+
+# Ignore logs
+*.log
+
+# Ignore OS files
+.DS_Store
+Thumbs.db
+
+# Ignore JAR/WAR/EAR archives
+*.jar
+*.war
+*.ear
+
+# Ignore generated files
+generated/
+
+# Ignore test reports
+test-output/
+target/
