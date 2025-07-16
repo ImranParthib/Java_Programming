@@ -9,7 +9,7 @@ public class HelloController {
     // Root endpoint
     @GetMapping("/")
     public String home() {
-        return "Welcome to Devio Backend API! Visit /api/hello for the API endpoint.";
+        return "Welcome to Devio Company Listing API! Available endpoints: /api/hello, /api/companies";
     }
 
     @GetMapping("/api/hello")
