@@ -22,11 +22,11 @@ public class ListDialog extends JDialog {
     }
 
     private void createComponents(String[] columnNames, Object[][] data) {
-        // Create table
+        // Create table with model
         DefaultTableModel model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false;
+                return false; // Make cells non-editable
             }
         };
 
@@ -34,14 +34,14 @@ public class ListDialog extends JDialog {
         sorter = new TableRowSorter<>(model);
         table.setRowSorter(sorter);
 
-        // Style table
+        // Style the table
         table.setFont(new Font("Arial", Font.PLAIN, 14));
         table.setRowHeight(25);
         table.setIntercellSpacing(new Dimension(10, 5));
         table.setShowGrid(false);
         table.setSelectionBackground(new Color(230, 230, 250));
 
-        // Style header
+        // Style the table header
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Arial", Font.BOLD, 14));
         header.setBackground(new Color(70, 130, 180));
@@ -63,8 +63,14 @@ public class ListDialog extends JDialog {
         closeButton.setBackground(new Color(70, 130, 180));
         closeButton.setForeground(Color.WHITE);
         closeButton.setFocusPainted(false);
+        closeButton.setOpaque(true);
+        closeButton.setBorderPainted(false);
 
-        // Create panels
+        // Add hover effect to buttons
+        addHoverEffect(searchButton);
+        addHoverEffect(closeButton);
+
+        // Create panels for search and buttons
         searchPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
     }
@@ -82,7 +88,7 @@ public class ListDialog extends JDialog {
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         buttonPanel.add(closeButton);
 
-        // Add components to dialog
+        // Add components to the dialog
         add(searchPanel, BorderLayout.NORTH);
         add(new JScrollPane(table), BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
@@ -110,5 +116,20 @@ public class ListDialog extends JDialog {
     private void finalizeDialog() {
         setSize(800, 500);
         setLocationRelativeTo(getOwner());
+        setMinimumSize(new Dimension(800, 600));
+        setResizable(true);
+    }
+
+    // Helper method for adding hover effects to buttons
+    private void addHoverEffect(JButton button) {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(60, 116, 162)); // Darker on hover
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(70, 130, 180)); // Original color when mouse leaves
+            }
+        });
     }
 }

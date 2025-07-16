@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -225,15 +227,23 @@ public class UniversityManagementSystemGUI {
             }
         }
 
-        JOptionPane.showMessageDialog(null, result.toString());
+        DetailDialog dialog = new DetailDialog(null, "Search Results", result.toString());
+        dialog.setVisible(true);
     }
 
     private void listDepartments() {
-        StringBuilder departmentsList = new StringBuilder("Departments in " + university.getName() + ":\n");
+        String[] columnNames = {"Department Name", "Budget"};
+        Object[][] data = new Object[university.getDepartments().size()][2];
+
+        int i = 0;
         for (Department department : university.getDepartments()) {
-            departmentsList.append("- ").append(department.getName()).append("\n");
+            data[i][0] = department.getName();
+            data[i][1] = department.getBudget();
+            i++;
         }
-        JOptionPane.showMessageDialog(null, departmentsList.toString());
+
+        ListDialog dialog = new ListDialog(null, "Departments in " + university.getName(), columnNames, data);
+        dialog.setVisible(true);
     }
 
     private void addDepartment() {
@@ -258,7 +268,8 @@ public class UniversityManagementSystemGUI {
             for (Professor professor : department.getProfessors()) {
                 details.append("- ").append(professor.getName()).append("\n");
             }
-            JOptionPane.showMessageDialog(null, details.toString());
+            DetailDialog dialog = new DetailDialog(null, "Department Details", details.toString());
+            dialog.setVisible(true);
         } else {
             JOptionPane.showMessageDialog(null, "Department not found.");
         }
@@ -290,14 +301,27 @@ public class UniversityManagementSystemGUI {
     }
 
     private void listCourses() {
-        StringBuilder coursesList = new StringBuilder("Courses in " + university.getName() + ":\n");
+        String[] columnNames = {"Course Code", "Course Title", "Department", "Schedule"};
+        List<Object[]> dataList = new ArrayList<>();
+
         for (Department department : university.getDepartments()) {
             for (Course course : department.getCourses()) {
-                coursesList.append("- ").append(course.getTitle()).append(" (").append(department.getName()).append(")\n");
+                Object[] row = {
+                        course.getCode(),
+                        course.getTitle(),
+                        department.getName(),
+                        course.getSchedule()
+                };
+                dataList.add(row);
             }
         }
-        JOptionPane.showMessageDialog(null, coursesList.toString());
+
+        Object[][] data = dataList.toArray(new Object[0][]);
+        ListDialog dialog = new ListDialog(null, "Courses in " + university.getName(), columnNames, data);
+        dialog.setVisible(true);
     }
+
+
 
     private void addCourse() {
         String departmentName = JOptionPane.showInputDialog("Enter Department Name:");
@@ -328,7 +352,8 @@ public class UniversityManagementSystemGUI {
                 for (Student student : course.getStudents()) {
                     details.append("- ").append(student.getName()).append("\n");
                 }
-                JOptionPane.showMessageDialog(null, details.toString());
+                DetailDialog dialog = new DetailDialog(null, "Course Details", details.toString());
+                dialog.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(null, "Course not found.");
             }
@@ -375,15 +400,26 @@ public class UniversityManagementSystemGUI {
     }
 
     private void listStudents() {
-        StringBuilder studentsList = new StringBuilder("Students in " + university.getName() + ":\n");
+        String[] columnNames = {"Student ID", "Student Name", "Course", "Department"};
+        List<Object[]> dataList = new ArrayList<>();
+
         for (Department department : university.getDepartments()) {
             for (Course course : department.getCourses()) {
                 for (Student student : course.getStudents()) {
-                    studentsList.append("- ").append(student.getName()).append(" (").append(course.getTitle()).append(")\n");
+                    Object[] row = {
+                            student.getId(),
+                            student.getName(),
+                            course.getTitle(),
+                            department.getName()
+                    };
+                    dataList.add(row);
                 }
             }
         }
-        JOptionPane.showMessageDialog(null, studentsList.toString());
+
+        Object[][] data = dataList.toArray(new Object[0][]);
+        ListDialog dialog = new ListDialog(null, "Students in " + university.getName(), columnNames, data);
+        dialog.setVisible(true);
     }
 
     private void addStudent() {
@@ -407,13 +443,23 @@ public class UniversityManagementSystemGUI {
     }
 
     private void listProfessors() {
-        StringBuilder professorsList = new StringBuilder("Professors in " + university.getName() + ":\n");
+        String[] columnNames = {"Professor ID", "Professor Name", "Department"};
+        List<Object[]> dataList = new ArrayList<>();
+
         for (Department department : university.getDepartments()) {
             for (Professor professor : department.getProfessors()) {
-                professorsList.append("- ").append(professor.getName()).append(" (").append(department.getName()).append(")\n");
+                Object[] row = {
+                        professor.getId(),
+                        professor.getName(),
+                        department.getName()
+                };
+                dataList.add(row);
             }
         }
-        JOptionPane.showMessageDialog(null, professorsList.toString());
+
+        Object[][] data = dataList.toArray(new Object[0][]);
+        ListDialog dialog = new ListDialog(null, "Professors in " + university.getName(), columnNames, data);
+        dialog.setVisible(true);
     }
 
     private void addProfessor() {
